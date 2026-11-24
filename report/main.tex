@@ -1,0 +1,177 @@
+\documentclass[12pt,a4paper]{article}
+
+% ==============================================================================
+% COMPILER: XeLaTeX (MiKTeX / Overleaf) - Native Vietnamese Unicode Support
+% ==============================================================================
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+\setmonofont[Scale=0.88]{Consolas}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{tikz}
+\usetikzlibrary{calc,positioning,arrows.meta,patterns,decorations.pathmorphing}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+% --- HCMUT Palette ---
+\definecolor{hcmutblue}{RGB}{0, 56, 123}
+\definecolor{hcmutlight}{RGB}{235, 243, 252}
+\definecolor{accentred}{RGB}{192, 57, 43}
+\definecolor{accentgreen}{RGB}{22, 128, 72}
+\definecolor{accentorange}{RGB}{211, 84, 0}
+\definecolor{codebg}{RGB}{246, 248, 250}
+\definecolor{codeborder}{RGB}{208, 215, 222}
+
+\usepackage[
+    colorlinks=true,
+    linkcolor=hcmutblue,
+    urlcolor=hcmutblue,
+    citecolor=hcmutblue,
+    pdftitle={Học phần mở rộng - Giải tích mạch EE2033 - Đề 5},
+    pdfauthor={Nhóm SV HCMUT}
+]{hyperref}
+
+% --- Page Geometry (A4: 210mm x 297mm, margins: L=2.5cm, R=2.5cm, T=2.4cm, B=2.4cm) ---
+\pdfpagewidth=210mm
+\pdfpageheight=297mm
+\setlength{\hoffset}{0pt}
+\setlength{\voffset}{0pt}
+\setlength{\oddsidemargin}{-0.04cm}   % 2.54cm - 0.04cm = 2.5cm
+\setlength{\evensidemargin}{-0.04cm}
+\setlength{\textwidth}{16.0cm}
+\setlength{\topmargin}{-0.94cm}      % 2.54cm - 0.94cm = 1.6cm to header
+\setlength{\headheight}{15pt}
+\setlength{\headsep}{18pt}
+\setlength{\textheight}{23.8cm}
+\setlength{\footskip}{26pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\renewcommand{\baselinestretch}{1.18}
+
+% --- Vietnamese Labels ---
+\renewcommand{\contentsname}{MỤC LỤC}
+\renewcommand{\listfigurename}{DANH MỤC HÌNH VẼ}
+\renewcommand{\listtablename}{DANH MỤC BẢNG BIỂU}
+\renewcommand{\figurename}{Hình}
+\renewcommand{\tablename}{Bảng}
+\renewcommand{\refname}{TÀI LIỆU THAM KHẢO}
+\renewcommand{\lstlistingname}{Đoạn mã}
+
+% --- Custom Header & Footer (no fancyhdr needed) ---
+\makeatletter
+\def\ps@hcmut{%
+    \def\@oddhead{%
+        \vbox{%
+            \hbox to \textwidth{%
+                {\small\color{hcmutblue}\textit{Trường Đại học Bách Khoa -- ĐHQG TP.HCM}}%
+                \hfill%
+                {\small\color{hcmutblue}\textit{Giải tích mạch (EE2033) -- Đề 5}}%
+            }%
+            \vspace{2pt}%
+            {\color{hcmutblue}\hrule height 0.6pt}%
+        }%
+    }%
+    \def\@evenhead{\@oddhead}%
+    \def\@oddfoot{%
+        \vbox{%
+            {\color{hcmutblue!50}\hrule height 0.4pt}%
+            \vspace{3pt}%
+            \hbox to \textwidth{%
+                {\small\color{black!65}Học phần mở rộng -- Học kỳ 261}%
+                \hfill%
+                {\small\color{hcmutblue}\textbf{Trang \thepage}}%
+            }%
+        }%
+    }%
+    \def\@evenfoot{\@oddfoot}%
+}
+% Style section titles cleanly in HCMUT blue
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+    {-16pt \@plus -4pt \@minus -2pt}%
+    {8pt \@plus 2pt}%
+    {\normalfont\Large\bfseries\color{hcmutblue}}}
+\renewcommand\subsection{\@startsection{subsection}{2}{\z@}%
+    {-12pt \@plus -3pt \@minus -2pt}%
+    {5pt \@plus 1pt}%
+    {\normalfont\large\bfseries\color{hcmutblue!90!black}}}
+\renewcommand\subsubsection{\@startsection{subsubsection}{3}{\z@}%
+    {-8pt \@plus -2pt \@minus -1pt}%
+    {4pt \@plus 1pt}%
+    {\normalfont\normalsize\bfseries\color{black!85}}}
+\makeatother
+
+% --- Clean booktabs-style rules without requiring booktabs.sty ---
+\newcommand{\toprule}{\noalign{\hrule height 1.1pt}}
+\newcommand{\midrule}{\noalign{\hrule height 0.5pt}}
+\newcommand{\bottomrule}{\noalign{\hrule height 1.1pt}}
+\renewcommand{\arraystretch}{1.28}
+
+% --- Custom Callout Box using TikZ ---
+\newcommand{\notebox}[2]{%
+    \par\vspace{4pt}%
+    \noindent\begin{tikzpicture}
+        \node[
+            draw=hcmutblue,
+            line width=0.8pt,
+            fill=hcmutlight,
+            rounded corners=3pt,
+            inner sep=10pt,
+            text width=\dimexpr\textwidth-22pt\relax,
+            align=left
+        ] (box) {%
+            {\color{hcmutblue}\textbf{#1}}\\[3pt]
+            #2
+        };
+    \end{tikzpicture}%
+    \par\vspace{4pt}%
+}
+
+% --- Code Listing Style (for SPICE netlist / .meas commands) ---
+\lstset{
+    basicstyle=\ttfamily\small,
+    backgroundcolor=\color{codebg},
+    frame=single,
+    rulecolor=\color{codeborder},
+    breaklines=true,
+    xleftmargin=6pt,
+    xrightmargin=6pt,
+    aboveskip=8pt,
+    belowskip=8pt
+}
+
+% --- Math Helpers ---
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\jj}{\mathrm{j}}
+\newcommand{\RMS}{\text{rms}}
+
+% ==============================================================================
+\begin{document}
+
+% --- Trang bìa & Phân công công việc ---
+\input{chapters/00_cover}
+
+% --- Mục lục ---
+\clearpage
+\tableofcontents
+\vspace{10pt}
+\listoffigures
+\vspace{10pt}
+\listoftables
+
+% --- Nội dung chính ---
+\clearpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\input{chapters/01_intro}
+\input{chapters/02_theory}
+\input{chapters/03_simulation}
+\input{chapters/04_comparison}
+\input{chapters/05_conclusion}
+
+\end{document}

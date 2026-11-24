@@ -1,0 +1,129 @@
+% ==============================================================================
+% TRANG BÌA CHUẨN HCMUT & BẢNG PHÂN CÔNG CÔNG VIỆC
+% ==============================================================================
+\begin{titlepage}
+    \thispagestyle{empty}
+    % Khung viền đôi chuẩn báo cáo HCMUT vẽ bằng TikZ
+    \begin{tikzpicture}[remember picture, overlay]
+        \draw[color=hcmutblue, line width=2.2pt]
+            ($(current page.north west)+(1.8cm,-1.6cm)$) rectangle
+            ($(current page.south east)+(-1.6cm,1.6cm)$);
+        \draw[color=hcmutblue, line width=0.8pt]
+            ($(current page.north west)+(2.0cm,-1.8cm)$) rectangle
+            ($(current page.south east)+(-1.8cm,1.8cm)$);
+    \end{tikzpicture}
+
+    \begin{center}
+        \vspace*{0.15cm}
+        {\fontsize{13}{16}\selectfont \textbf{ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH}}\\[2pt]
+        {\fontsize{14}{18}\selectfont \textbf{TRƯỜNG ĐẠI HỌC BÁCH KHOA}}\\[2pt]
+        {\fontsize{13}{16}\selectfont \textbf{KHOA ĐIỆN -- ĐIỆN TỬ}}\\[0.4cm]
+
+        % Biểu trưng hình học tối giản (có thể thay bằng \includegraphics[width=3cm]{figures/logo_hcmut.png})
+        \begin{tikzpicture}
+            \draw[hcmutblue, line width=1.6pt] (0,0) circle (1.28cm);
+            \draw[hcmutblue!70, line width=0.8pt] (0,0) circle (1.12cm);
+            \node[hcmutblue, font=\bfseries\large] at (0,0.20) {HCMUT};
+            \node[hcmutblue!85, font=\bfseries\scriptsize] at (0,-0.28) {EE2033 -- HK261};
+        \end{tikzpicture}
+
+        \vspace{0.75cm}
+        {\fontsize{15}{19}\selectfont \textbf{BÁO CÁO HỌC PHẦN MỞ RỘNG}}\\[0.25cm]
+        {\fontsize{13}{16}\selectfont Môn học: \textbf{GIẢI TÍCH MẠCH (EE2033)}}\\[0.6cm]
+
+        \begin{tikzpicture}
+            \node[
+                draw=hcmutblue,
+                line width=1.2pt,
+                fill=hcmutlight,
+                rounded corners=4pt,
+                inner sep=12pt,
+                text width=13.4cm,
+                align=center
+            ] {%
+                {\fontsize{15}{21}\selectfont\bfseries\color{hcmutblue}
+                ĐỀ 5: PHÂN TÍCH MẠCH RLC BẰNG CHUỖI FOURIER\\[3pt]
+                VÀ MÔ PHỎNG VỚI NGUỒN ÁP CHỈNH LƯU BÁN KỲ}\\[6pt]
+                {\normalsize\color{black!80}Bộ thông số cá thể hóa: $N_1 = 2,\; N_2 = 3,\; N_3 = 1$}
+            };
+        \end{tikzpicture}
+
+        \vspace{0.8cm}
+
+        % Thông tin GVHD và Nhóm sinh viên (chỉnh sửa trực tiếp các dòng màu đỏ)
+        {\renewcommand{\arraystretch}{1.35}
+        \begin{tabular}{>{\bfseries}l l}
+            Giảng viên hướng dẫn: & {\color{accentred}[Điền họ tên Giảng viên hướng dẫn]} \\
+            Lớp / Nhóm:           & {\color{accentred}[Điền mã lớp -- Tên nhóm]} \\
+            Học kỳ:               & Học kỳ 1 năm học 2026 -- 2027 (HK261) \\
+        \end{tabular}}
+
+        \vspace{0.65cm}
+        {\bfseries\color{hcmutblue} DANH SÁCH THÀNH VIÊN NHÓM}\\[6pt]
+        {\renewcommand{\arraystretch}{1.3}
+        \begin{tabular}{|c|l|c|c|}
+            \hline
+            \textbf{STT} & \textbf{Họ và tên sinh viên} & \textbf{MSSV} & \textbf{Hệ số $N_i$} \\
+            \hline
+            1 & {\color{accentred}[Họ tên Sinh viên 1]} & {\color{accentred}[xxxxxxx2]} & $N_1 = 2$ \\
+            \hline
+            2 & {\color{accentred}[Họ tên Sinh viên 2]} & {\color{accentred}[xxxxxxx3]} & $N_2 = 3$ \\
+            \hline
+            3 & {\color{accentred}[Họ tên Sinh viên 3]} & {\color{accentred}[xxxxxxx1]} & $N_3 = 1$ \\
+            \hline
+        \end{tabular}}
+
+        \vfill
+        {\fontsize{12}{15}\selectfont \textbf{THÀNH PHỐ HỒ CHÍ MINH -- THÁNG 11/2026}}
+        \vspace*{0.1cm}
+    \end{center}
+\end{titlepage}
+
+% ==============================================================================
+% BẢNG PHÂN CÔNG CÔNG VIỆC (Tiêu chí bắt buộc trong thang điểm Hình thức)
+% ==============================================================================
+\clearpage
+\pagestyle{hcmut}
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+\section*{BẢNG PHÂN CÔNG CÔNG VIỆC VÀ ĐÁNH GIÁ ĐÓNG GÓP}
+\addcontentsline{toc}{section}{Bảng phân công công việc}
+
+Để đảm bảo tiến độ và chất lượng bài tập học phần mở rộng môn Giải tích mạch (EE2033), các thành viên trong nhóm thống nhất phân công nhiệm vụ và tỷ lệ đóng góp như trong Bảng~\ref{tab:phancong}.
+
+\begin{table}[!htbp]
+    \centering
+    \caption{Phân công công việc chi tiết của các thành viên trong nhóm.}
+    \label{tab:phancong}
+    \vspace{4pt}
+    \small
+    \renewcommand{\arraystretch}{1.22}
+    \begin{tabular}{|c|p{3.4cm}|>{\raggedright\arraybackslash}p{8.4cm}|c|}
+        \toprule
+        \textbf{STT} & \textbf{Thành viên} & \textbf{Nhiệm vụ phụ trách} & \textbf{Tỷ lệ} \\
+        \midrule
+        1 & {\color{accentred}[Họ tên SV 1]}\newline (MSSV: \texttt{...2}) &
+        -- Tính toán thông số cá thể hóa và giải chi tiết lý thuyết Câu~a (khai triển chuỗi Fourier lượng giác).\newline
+        -- Thiết lập hàm truyền $H(\jj n\omega_0)$, biểu thức tổng quát Câu~b và biểu thức xấp xỉ 3 hài, 5 hài Câu~c.\newline
+        -- Viết script kiểm chứng tích phân số và giá trị RMS theo định lý Parseval.
+        & \textbf{33,3\%} \\
+        \hline
+        2 & {\color{accentred}[Họ tên SV 2]}\newline (MSSV: \texttt{...3}) &
+        -- Thiết kế và tích hợp toàn bộ mạch Câu~d và Câu~e trong 01 file LTspice duy nhất (\texttt{De5\_RLC\_Fourier.asc}).\newline
+        -- Cấu hình mô phỏng xác lập (\texttt{.tran}, \texttt{plotwinsize=0}, \texttt{Rser=0}) và các lệnh đo tự động \texttt{.meas}.\newline
+        -- Trích xuất dữ liệu sóng và kiểm tra file mô phỏng chạy sạch không lỗi.
+        & \textbf{33,3\%} \\
+        \hline
+        3 & {\color{accentred}[Họ tên SV 3]}\newline (MSSV: \texttt{...1}) &
+        -- Xử lý dữ liệu mô phỏng, tính sai số tương đối, RMSE/NRMSE và dựng đồ thị đối chiếu giữa (c), (d), (e).\newline
+        -- Phân tích bản chất vật lý, sự hội tụ chuỗi Fourier và đặc tính lọc thông cao bậc 2 của mạch.\newline
+        -- Biên soạn, định dạng báo cáo LaTeX hoàn chỉnh và rà soát toàn văn trước khi nộp.
+        & \textbf{33,3\%} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\notebox{Lưu ý về quy tắc lấy thông số $N_3$}{%
+Với nhóm gồm 03 sinh viên có chữ số cuối MSSV lần lượt là $2$, $3$ và $1$, nhóm áp dụng bộ thông số $N_1 = 2$, $N_2 = 3$ và $N_3 = 1$ (tương ứng với chữ số cuối MSSV của ba thành viên theo quy tắc cá thể hóa của đề bài).%
+}

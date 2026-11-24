@@ -1,0 +1,218 @@
+% ==============================================================================
+% CHƯƠNG 3: THIẾT KẾ VÀ KẾT QUẢ MÔ PHỎNG TRÊN LTSPICE (CÂU d, e)
+% ==============================================================================
+\section{Thiết kế và kết quả mô phỏng trên LTspice (Câu d, e)}
+
+\subsection{Tổ chức file mô phỏng và cấu hình chế độ xác lập}
+
+Phần mềm mô phỏng được chọn là \textbf{LTspice} (phiên bản 26.1.1). Đáp ứng yêu cầu chỉ nộp \textbf{01 file mô phỏng duy nhất} không lỗi, cả ba mạch tương ứng với Câu~d (nguồn thực), Câu~e (xếp chồng 3 sóng hài) và Câu~e (xếp chồng 5 sóng hài) được tích hợp song song trên cùng một sơ đồ \texttt{sim/De5\_RLC\_Fourier.asc} với chung điểm nối đất \texttt{GND} và các nhãn nút rõ ràng:
+\begin{itemize}
+    \item \textbf{Mạch 1 (Câu d):} Nút nguồn \texttt{e\_real}, nút ngõ ra \texttt{u0\_real}.
+    \item \textbf{Mạch 2 (Câu e -- 3 hài):} Nút nguồn \texttt{e\_3h}, nút ngõ ra \texttt{u0\_3h}.
+    \item \textbf{Mạch 3 (Câu e -- 5 hài):} Nút nguồn \texttt{e\_5h}, nút ngõ ra \texttt{u0\_5h}.
+\end{itemize}
+
+\textbf{Các thiết lập kỹ thuật quan trọng đảm bảo độ chính xác:}
+\begin{enumerate}
+    \item \textbf{Đảm bảo linh kiện lý tưởng:} Trong LTspice, cuộn cảm mặc định có điện trở nối tiếp ẩn $R_{\text{ser}} = 1\text{ m}\Omega$. Cả ba cuộn cảm \texttt{L1}, \texttt{L2}, \texttt{L3} đều được gán tường minh \texttt{Rser=0} để khớp đúng giả thiết lý thuyết.
+    \item \textbf{Trích xuất thuần chế độ xác lập:} Do hằng số thời gian quá độ $\tau = 1{,}008\text{ ms}$, nhóm thiết lập lệnh mô phỏng:
+    \begin{center}
+        \texttt{.tran 0 137.5m 100m 5u} \qquad và \qquad \texttt{.options plotwinsize=0}
+    \end{center}
+    tức chạy mô phỏng tổng cộng $11$ chu kỳ ($137{,}5\text{ ms}$), bỏ qua hoàn toàn $8$ chu kỳ quá độ đầu tiên ($100\text{ ms} \approx 99\tau$) và chỉ lưu dữ liệu không nén (\texttt{plotwinsize=0}) trên đúng $3$ chu kỳ xác lập cuối ($37{,}5\text{ ms}$) với bước thời gian cực đại $\Delta t_{\max} = 5\ \mu\text{s} = T/2500$.
+    \item \textbf{Đo tự động bằng câu lệnh \texttt{.meas}:} Dùng các lệnh \texttt{.meas TRAN} để trích chính xác giá trị cực đại (\texttt{MAX}), cực tiểu (\texttt{MIN}), biên độ đỉnh--đỉnh (\texttt{PP}) và giá trị hiệu dụng (\texttt{RMS}) trong cửa sổ xác lập $0{,}1\text{ s} \to 0{,}1375\text{ s}$ (đúng $3T$).
+\end{enumerate}
+
+% ==============================================================================
+\subsection{Câu d: Mô phỏng mạch với nguồn chỉnh lưu bán kỳ thực tế}
+
+Nguồn áp chỉnh lưu bán kỳ \eqref{eq:source_def} được mô hình hóa trực tiếp bằng nguồn áp phụ thuộc hành vi \texttt{BV} (\texttt{B\_real}) với biểu thức:
+\begin{equation}
+    \texttt{V=19*max(0,sin(2*pi*80*time))}
+\end{equation}
+mắc vào tụ $C_1 = 18\ \mu\text{F}$ nối tiếp với nhánh song song $(R_1 = 28\ \Omega \parallel L_1 = 14\text{ mH})$.
+
+Kết quả dạng sóng xác lập trích xuất từ LTspice trong 2 chu kỳ ($25\text{ ms}$) được trình bày tại Hình~\ref{fig:sim_real}. Các thông số đo tự động từ file log của LTspice (\texttt{De5\_RLC\_Fourier.log}) thu được:
+\begin{align*}
+    U_{0,\text{real,max}} &= 2{,}6158\text{ V}, & U_{0,\text{real,min}} &= -1{,}4987\text{ V}, \\
+    U_{0,\text{real,pp}}  &= 4{,}1145\text{ V}, & U_{0,\text{real,\RMS}} &= 1{,}1408\text{ V}.
+\end{align*}
+
+\begin{figure}[!htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            name=topaxis,
+            width=14.6cm, height=4.4cm,
+            ylabel={$e_{\text{real}}(t)$ (V)},
+            xmin=0, xmax=25,
+            ymin=-2, ymax=21,
+            xticklabels=\empty,
+            grid=both,
+            grid style={gray!25},
+            title={\small Đáp ứng xác lập mô phỏng LTspice -- Câu d (Nguồn chỉnh lưu bán kỳ thực tế)}
+        ]
+            \addplot[hcmutblue, line width=1.15pt] table[x=t_ms, y=e_real] {data/waveforms_2T.dat};
+        \end{axis}
+        \begin{axis}[
+            at={($(topaxis.south)+(0,-0.35cm)$)},
+            anchor=north,
+            width=14.6cm, height=5.0cm,
+            xlabel={Thời gian xác lập $t - t_{\text{start}}$ (ms)},
+            ylabel={$u_{0,\text{real}}(t)$ (V)},
+            xmin=0, xmax=25,
+            ymin=-2.0, ymax=3.1,
+            xtick={0,3.125,6.25,9.375,12.5,15.625,18.75,21.875,25},
+            xticklabels={0,3.125,6.25,9.375,12.5,15.625,18.75,21.875,25},
+            grid=both,
+            grid style={gray!25}
+        ]
+            \addplot[accentred, line width=1.2pt] table[x=t_ms, y=u0_real] {data/waveforms_2T.dat};
+            \draw[gray, dashed, line width=0.6pt] (axis cs:0,0) -- (axis cs:25,0);
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Dạng sóng nguồn áp $e_{\text{real}}(t)$ và điện áp đáp ứng xác lập $u_{0,\text{real}}(t)$ từ mô phỏng LTspice (Câu~d) trên 2 chu kỳ ($2T = 25\text{ ms}$).}
+    \label{fig:sim_real}
+\end{figure}
+
+Quan sát Hình~\ref{fig:sim_real} thấy rõ hai hiện tượng đặc trưng của mạch lọc thông cao bậc 2: (i) điện áp $u_0(t)$ dao động đối xứng quanh mức trung bình bằng $0\text{ V}$ (thành phần DC bị tụ $C$ chặn hoàn toàn); (ii) tại các thời điểm $t = 0,\; 6{,}25,\; 12{,}5\text{ ms}$ (khi nguồn $e(t)$ gãy góc đạo hàm lúc bắt đầu/kết thúc bán kỳ dương), đáp ứng $u_0(t)$ xuất hiện các đỉnh chuyển tiếp sắc nét, đạt cực đại $2{,}6158\text{ V}$ ngay sau $t = T/2 = 6{,}25\text{ ms}$ (tại $t \approx 6{,}88\text{ ms}$) và cực tiểu $-1{,}4987\text{ V}$ trong bán kỳ dương (tại $t \approx 2{,}68\text{ ms}$).
+
+% ==============================================================================
+\subsection{Câu e: Mô phỏng mạch bằng phương pháp xếp chồng nguồn hình sin}
+
+Trong LTspice, nguồn hình sin có cú pháp \texttt{SINE(Voffset Vamp Freq Td Theta Phi)} tạo tín hiệu $V_{\text{offset}} + V_{\text{amp}}\sin(2\pi f t + \Phi^\circ)$. Do đó, các thành phần nguồn trong \eqref{eq:e_fourier_sym} được cấu hình với độ chính xác 6 chữ số thập phân như Bảng~\ref{tab:ltspice_sources}. Thành phần một chiều $V_0 = a_0 = 6{,}047888\text{ V}$ cũng được mắc nối tiếp cùng các nguồn sin nhằm tái tạo đúng hoàn toàn dạng sóng nguồn $e(t)$ (tuy không làm thay đổi đáp ứng xác lập $u_0(t)$ vì tụ $C$ chặn DC).
+
+\begin{table}[!htbp]
+    \centering
+    \caption{Thông số các nguồn áp mắc nối tiếp trong file mô phỏng \texttt{De5\_RLC\_Fourier.asc} (Câu~e).}
+    \label{tab:ltspice_sources}
+    \vspace{4pt}
+    \small
+    \begin{tabular}{|c|c|l|c|c|}
+        \toprule
+        \textbf{Bậc $n$} & \textbf{Thành phần nguồn} & \textbf{Tham số nguồn trong LTspice} & \textbf{Mạch 3 hài} & \textbf{Mạch 5 hài} \\
+        \midrule
+        $0$ (DC) & $+6{,}047888\text{ V}$            & \texttt{6.047888} (DC)                  & Có (\texttt{V3\_0}) & Có (\texttt{V5\_0}) \\
+        $1$      & $+9{,}500000\sin(160\pi t)$       & \texttt{SINE(0 9.5 80 0 0 0)}           & Có (\texttt{V3\_1}) & Có (\texttt{V5\_1}) \\
+        $2$      & $-4{,}031925\cos(320\pi t)$       & \texttt{SINE(0 4.031925 160 0 0 -90)}   & Có (\texttt{V3\_2}) & Có (\texttt{V5\_2}) \\
+        $4$      & $-0{,}806385\cos(640\pi t)$       & \texttt{SINE(0 0.806385 320 0 0 -90)}   & Có (\texttt{V3\_4}) & Có (\texttt{V5\_4}) \\
+        $6$      & $-0{,}345594\cos(960\pi t)$       & \texttt{SINE(0 0.345594 480 0 0 -90)}   & --                  & Có (\texttt{V5\_6}) \\
+        $8$      & $-0{,}191996\cos(1280\pi t)$      & \texttt{SINE(0 0.191996 640 0 0 -90)}   & --                  & Có (\texttt{V5\_8}) \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{figure}[!htbp]
+    \centering
+    \begin{tikzpicture}[>=Stealth, line width=0.9pt, scale=0.92]
+        % Chuỗi nguồn xếp chồng nối tiếp
+        \draw (0,0) -- (0,0.4);
+        \foreach \y/\lbl/\freq in {0.85/$V_0$/DC, 1.95/$V_1$/$f_0$, 3.05/$V_2$/$2f_0$, 4.15/$V_k$/$kf_0$} {
+            \draw (0,\y) circle (0.38cm);
+            \node[font=\scriptsize] at (0,\y+0.18) {$+$};
+            \node[font=\scriptsize] at (0,\y-0.18) {$-$};
+            \node[left, font=\small] at (-0.45,\y) {\lbl\ (\freq)};
+        }
+        \draw (0,1.23) -- (0,1.57);
+        \draw (0,2.33) -- (0,2.67);
+        \draw[dashed] (0,3.43) -- (0,3.77);
+        \draw (0,4.53) -- (0,5.0) -- (2.3,5.0);
+
+        % Nhãn e_xh(t)
+        \node[above, font=\small, color=hcmutblue] at (0.95,5.08) {$e_{3\text{h}}/e_{5\text{h}}(t)$};
+
+        % Tụ C
+        \draw[line width=1.4pt] (2.3,4.6) -- (2.3,5.4);
+        \draw[line width=1.4pt] (2.58,4.6) -- (2.58,5.4);
+        \node[above] at (2.44,5.48) {$C = 18\ \mu\text{F}$};
+
+        % Nhánh trên tới R || L
+        \draw (2.58,5.0) -- (8.0,5.0);
+        \fill (3.7,5.0) circle (2pt);
+        \fill (6.8,5.0) circle (2pt);
+
+        % Điện trở R
+        \draw (3.7,5.0) -- (3.7,3.3)
+            -- (3.5,3.16) -- (3.9,2.92) -- (3.5,2.68)
+            -- (3.9,2.44) -- (3.5,2.20) -- (3.9,1.96)
+            -- (3.7,1.82) -- (3.7,0);
+        \node[left, font=\small] at (3.45,2.55) {$R = 28\ \Omega$};
+
+        % Cuộn cảm L (tách rộng hoàn toàn khỏi R và ngõ ra)
+        \draw (6.8,5.0) -- (6.8,3.3);
+        \draw (6.8,3.3) arc (90:-90:0.20);
+        \draw (6.8,2.9) arc (90:-90:0.20);
+        \draw (6.8,2.5) arc (90:-90:0.20);
+        \draw (6.8,2.1) arc (90:-90:0.20);
+        \draw (6.8,1.7) -- (6.8,0);
+        \node[left, font=\small] at (6.65,2.55) {$L = 14\text{ mH}$};
+
+        % Cực ngõ ra
+        \filldraw[fill=white] (8.0,5.0) circle (2.2pt);
+        \filldraw[fill=white] (8.0,0) circle (2.2pt);
+        \node[right] at (8.15,4.85) {$+$};
+        \node[right] at (8.15,0.15) {$-$};
+        \node[right, color=accentred] at (8.25,2.5) {$u_{0,3\text{h}}/u_{0,5\text{h}}(t)$};
+
+        % Đường đất & ký hiệu GND
+        \draw (0,0) -- (8.0,0);
+        \fill (3.7,0) circle (2pt);
+        \fill (6.8,0) circle (2pt);
+        \draw (0,0) -- (0,-0.32);
+        \draw (-0.3,-0.32) -- (0.3,-0.32);
+        \draw (-0.2,-0.45) -- (0.2,-0.45);
+        \draw (-0.1,-0.58) -- (0.1,-0.58);
+    \end{tikzpicture}
+    \caption{Sơ đồ nguyên lý mạch xếp chồng các nguồn áp hình sin mắc nối tiếp trong LTspice (Câu~e): $k \in \{1,2,4\}$ cho trường hợp 3 sóng hài và $k \in \{1,2,4,6,8\}$ cho trường hợp 5 sóng hài.}
+    \label{fig:superposition_schematic}
+\end{figure}
+
+Dạng sóng điện áp xác lập đo được trong LTspice cho hai trường hợp xếp chồng 3 sóng hài (\texttt{V(u0\_3h)}) và 5 sóng hài (\texttt{V(u0\_5h)}) được minh họa tại Hình~\ref{fig:sim_3h_5h}.
+
+\begin{figure}[!htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            name=ax3h,
+            width=14.6cm, height=4.4cm,
+            ylabel={$u_{0,3\text{h}}(t)$ (V)},
+            xmin=0, xmax=25,
+            ymin=-2.1, ymax=3.0,
+            xticklabels=\empty,
+            grid=both,
+            grid style={gray!25},
+            title={\small Đáp ứng xác lập mô phỏng xếp chồng LTspice -- Câu e}
+        ]
+            \addplot[accentorange, line width=1.15pt] table[x=t_ms, y=u0_3h_sim] {data/waveforms_2T.dat};
+            \draw[gray, dashed, line width=0.6pt] (axis cs:0,0) -- (axis cs:25,0);
+            \node[anchor=north east, font=\small, fill=white, inner sep=2pt] at (axis cs:24.6,2.85) {3 sóng hài ($n=1,2,4$): $U_{\RMS} = 1{,}0866\text{ V}$};
+        \end{axis}
+
+        \begin{axis}[
+            at={($(ax3h.south)+(0,-0.35cm)$)},
+            anchor=north,
+            width=14.6cm, height=4.6cm,
+            xlabel={Thời gian xác lập $t - t_{\text{start}}$ (ms)},
+            ylabel={$u_{0,5\text{h}}(t)$ (V)},
+            xmin=0, xmax=25,
+            ymin=-2.1, ymax=3.0,
+            xtick={0,3.125,6.25,9.375,12.5,15.625,18.75,21.875,25},
+            xticklabels={0,3.125,6.25,9.375,12.5,15.625,18.75,21.875,25},
+            grid=both,
+            grid style={gray!25}
+        ]
+            \addplot[accentgreen, line width=1.15pt] table[x=t_ms, y=u0_5h_sim] {data/waveforms_2T.dat};
+            \draw[gray, dashed, line width=0.6pt] (axis cs:0,0) -- (axis cs:25,0);
+            \node[anchor=north east, font=\small, fill=white, inner sep=2pt] at (axis cs:24.6,2.85) {5 sóng hài ($n=1,2,4,6,8$): $U_{\RMS} = 1{,}1327\text{ V}$};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Kết quả mô phỏng xác lập $u_{0,3\text{h}}(t)$ và $u_{0,5\text{h}}(t)$ từ LTspice trong 2 chu kỳ ($2T = 25\text{ ms}$).}
+    \label{fig:sim_3h_5h}
+\end{figure}
+
+% Nếu muốn chèn thêm ảnh chụp giao diện schematic trực tiếp từ cửa sổ LTspice GUI:
+% \begin{figure}[!htbp]
+%     \centering
+%     \includegraphics[width=0.95\textwidth]{figures/ltspice_schematic.png}
+%     \caption{Ảnh chụp sơ đồ mô phỏng \texttt{De5\_RLC\_Fourier.asc} trên giao diện LTspice.}
+% \end{figure}

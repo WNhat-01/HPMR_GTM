@@ -1,0 +1,286 @@
+% ==============================================================================
+% CHƯƠNG 2: TÍNH TOÁN LÝ THUYẾT (CÂU a, b, c)
+% ==============================================================================
+\section{Tính toán lý thuyết (Câu a, b, c)}
+
+\subsection{Câu a: Khai triển chuỗi Fourier lượng giác cho nguồn áp \texorpdfstring{$e(t)$}{e(t)}}
+
+Chuỗi Fourier lượng giác tổng quát của tín hiệu tuần hoàn $e(t)$ có chu kỳ $T = 1/f_0$ và tần số góc cơ bản $\omega_0 = 2\pi f_0$ có dạng:
+\begin{equation}
+    e(t) = a_0 + \sum_{n=1}^{\infty} \Big[ a_n \cos(n\omega_0 t) + b_n \sin(n\omega_0 t) \Big].
+    \label{eq:fourier_general}
+\end{equation}
+Đặt biến góc pha $\theta = \omega_0 t \in [0, 2\pi]$, ta có $\dd t = \dd\theta / \omega_0$ và $e(\theta) = E_m \sin\theta$ với $\theta \in [0, \pi)$, $e(\theta) = 0$ với $\theta \in [\pi, 2\pi)$.
+
+\subsubsection*{1. Tính thành phần một chiều (DC) $a_0$}
+\begin{equation}
+    a_0 = \frac{1}{T}\int_{0}^{T} e(t)\dd t
+        = \frac{1}{2\pi}\int_{0}^{\pi} E_m \sin\theta \dd\theta
+        = \frac{E_m}{2\pi}\Big[-\cos\theta\Big]_{0}^{\pi}
+        = \frac{E_m}{\pi}.
+\end{equation}
+
+\subsubsection*{2. Tính hệ số $a_1, b_1$ ứng với sóng hài cơ bản ($n = 1$)}
+\begin{align}
+    a_1 &= \frac{2}{T}\int_{0}^{T/2} E_m \sin(\omega_0 t)\cos(\omega_0 t)\dd t
+         = \frac{E_m}{2\pi}\int_{0}^{\pi} \sin(2\theta)\dd\theta
+         = \frac{E_m}{2\pi}\left[-\frac{\cos(2\theta)}{2}\right]_{0}^{\pi} = 0, \\
+    b_1 &= \frac{2}{T}\int_{0}^{T/2} E_m \sin^2(\omega_0 t)\dd t
+         = \frac{E_m}{\pi}\int_{0}^{\pi} \frac{1 - \cos(2\theta)}{2}\dd\theta
+         = \frac{E_m}{2\pi}\left[\theta - \frac{\sin(2\theta)}{2}\right]_{0}^{\pi}
+         = \frac{E_m}{2}.
+\end{align}
+
+\subsubsection*{3. Tính hệ số $a_n, b_n$ với $n \ge 2$}
+Sử dụng công thức tích thành tổng lượng giác:
+\begin{align}
+    b_n &= \frac{E_m}{\pi}\int_{0}^{\pi} \sin\theta \sin(n\theta)\dd\theta
+         = \frac{E_m}{2\pi}\int_{0}^{\pi} \Big[\cos\big((n-1)\theta\big) - \cos\big((n+1)\theta\big)\Big]\dd\theta \nonumber\\
+        &= \frac{E_m}{2\pi}\left[\frac{\sin\big((n-1)\theta\big)}{n-1} - \frac{\sin\big((n+1)\theta\big)}{n+1}\right]_{0}^{\pi} = 0 \qquad (\forall n \ge 2).
+\end{align}
+Tương tự với $a_n$:
+\begin{align}
+    a_n &= \frac{E_m}{\pi}\int_{0}^{\pi} \sin\theta \cos(n\theta)\dd\theta
+         = \frac{E_m}{2\pi}\int_{0}^{\pi} \Big[\sin\big((n+1)\theta\big) - \sin\big((n-1)\theta\big)\Big]\dd\theta \nonumber\\
+        &= \frac{E_m}{2\pi}\left[-\frac{\cos\big((n+1)\theta\big)}{n+1} + \frac{\cos\big((n-1)\theta\big)}{n-1}\right]_{0}^{\pi} \nonumber\\
+        &= \frac{E_m}{2\pi}\left[\frac{1 - \cos\big((n+1)\pi\big)}{n+1} - \frac{1 - \cos\big((n-1)\pi\big)}{n-1}\right].
+\end{align}
+Xét hai trường hợp theo tính chẵn lẻ của $n \ge 2$:
+\begin{itemize}
+    \item Nếu $n$ \textbf{lẻ} ($n = 3, 5, 7, \dots$): $n+1$ và $n-1$ đều chẵn nên $\cos((n\pm 1)\pi) = +1 \implies a_n = 0$.
+    \item Nếu $n$ \textbf{chẵn} ($n = 2k,\; k = 1, 2, 3, \dots$): $n+1$ và $n-1$ đều lẻ nên $\cos((n\pm 1)\pi) = -1$, do đó:
+    \begin{equation}
+        a_n = \frac{E_m}{2\pi}\left(\frac{2}{n+1} - \frac{2}{n-1}\right)
+            = -\frac{2E_m}{\pi(n^2 - 1)}
+            = -\frac{2E_m}{\pi(4k^2 - 1)}.
+    \end{equation}
+\end{itemize}
+
+\subsubsection*{4. Kết quả chuỗi Fourier lượng giác của nguồn $e(t)$}
+\begin{equation}
+    e(t) = \frac{E_m}{\pi} + \frac{E_m}{2}\sin(\omega_0 t)
+           - \frac{2E_m}{\pi}\sum_{k=1}^{\infty} \frac{\cos(2k\omega_0 t)}{4k^2 - 1} \quad (\text{V}).
+    \label{eq:e_fourier_sym}
+\end{equation}
+Thay $E_m = 19\text{ V}$ và $\omega_0 = 160\pi\text{ rad/s}$:
+\begin{equation}
+    e(t) = \frac{19}{\pi} + 9{,}5\sin(160\pi t)
+           - \frac{38}{\pi}\sum_{k=1}^{\infty} \frac{\cos(320k\pi t)}{4k^2 - 1} \quad (\text{V}),
+\end{equation}
+hay viết tường minh các thành phần đầu tiên:
+\begin{align}
+    e(t) &= 6{,}0479 + 9{,}5000\sin(160\pi t) - 4{,}0319\cos(320\pi t) - 0{,}8064\cos(640\pi t) \nonumber\\
+         &\quad - 0{,}3456\cos(960\pi t) - 0{,}1920\cos(1280\pi t) - \cdots \quad (\text{V}).
+\end{align}
+Để tiện cho phép tính miền phức (phasor) và mô phỏng nguồn \texttt{SINE} trên LTspice, có thể quy đổi toàn bộ về biên độ dương dựa trên đồng nhất thức $-\cos\alpha = \cos(\alpha + 180^\circ) = \sin(\alpha - 90^\circ)$ và $\sin\alpha = \cos(\alpha - 90^\circ)$.
+
+Hình~\ref{fig:source_recon} minh họa nguồn chỉnh lưu bán kỳ thực tế $e(t)$ cùng dạng sóng xấp xỉ khi lấy thành phần DC kết hợp 3 sóng hài ($n=1,2,4$) và 5 sóng hài ($n=1,2,4,6,8$) đầu tiên.
+
+\begin{figure}[!htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=14.6cm, height=5.8cm,
+            xlabel={Thời gian $t$ (ms)},
+            ylabel={Điện áp nguồn $e(t)$ (V)},
+            xmin=0, xmax=25,
+            ymin=-2.5, ymax=21.5,
+            xtick={0,3.125,6.25,9.375,12.5,15.625,18.75,21.875,25},
+            xticklabels={0,3.125,6.25,9.375,12.5,15.625,18.75,21.875,25},
+            grid=both,
+            grid style={gray!25},
+            legend pos=north east,
+            legend style={font=\small, fill=white, fill opacity=0.9}
+        ]
+            \addplot[black, line width=1.3pt] table[x=t_ms, y=e_real] {data/waveforms_2T.dat};
+            \addlegendentry{Nguồn thực $e(t)$}
+            \addplot[accentred, dashed, line width=1.0pt] table[x=t_ms, y=e_3h] {data/waveforms_2T.dat};
+            \addlegendentry{Xấp xỉ DC + 3 hài ($n=1,2,4$)}
+            \addplot[hcmutblue, dotted, line width=1.2pt] table[x=t_ms, y=e_5h] {data/waveforms_2T.dat};
+            \addlegendentry{Xấp xỉ DC + 5 hài ($n=1,2,4,6,8$)}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Dạng sóng nguồn áp chỉnh lưu bán kỳ $e(t)$ và chuỗi Fourier xấp xỉ trong 2 chu kỳ ($2T = 25\text{ ms}$).}
+    \label{fig:source_recon}
+\end{figure}
+
+% ==============================================================================
+\subsection{Câu b: Biểu thức tổng quát cho điện áp \texorpdfstring{$u_0(t)$}{u0(t)} dưới dạng chuỗi vô hạn}
+
+Áp dụng phương pháp phức hóa và nguyên lý xếp chồng cho mạch tuyến tính bất biến theo thời gian ở chế độ xác lập điều hòa.
+
+\subsubsection*{1. Xét thành phần một chiều ($n = 0$, $\omega = 0$)}
+Ở chế độ xác lập một chiều, tụ điện $C$ có tổng trở $Z_C(0) = \infty$ (hở mạch) và cuộn cảm $L$ có tổng trở $Z_L(0) = 0$ (ngắn mạch), do đó dòng điện một chiều bằng $0$ và toàn bộ điện áp DC $a_0 = E_m/\pi$ đặt lên tụ $C$:
+\begin{equation}
+    H(0) = 0 \implies U_{0,0} = 0\text{ V}.
+\end{equation}
+
+\subsubsection*{2. Xét thành phần xoay chiều bậc $n \ge 1$ (tần số góc $\omega_n = n\omega_0$)}
+Tại tần số góc $\omega_n = n\omega_0$, tổng trở phức của tụ $C$ và nhánh song song $(R \parallel L)$ lần lượt là:
+\begin{equation}
+    Z_C(\jj n\omega_0) = \frac{1}{\jj n\omega_0 C}, \qquad
+    Z_{RL}(\jj n\omega_0) = \frac{R \cdot \jj n\omega_0 L}{R + \jj n\omega_0 L}.
+\end{equation}
+Theo quy tắc phân áp phức, hàm truyền điện áp $H(\jj n\omega_0) = \dot{U}_{0,n}/\dot{E}_n$ là:
+\begin{align}
+    H(\jj n\omega_0)
+    &= \frac{Z_{RL}(\jj n\omega_0)}{Z_C(\jj n\omega_0) + Z_{RL}(\jj n\omega_0)}
+     = \frac{\dfrac{\jj n\omega_0 RL}{R + \jj n\omega_0 L}}{\dfrac{1}{\jj n\omega_0 C} + \dfrac{\jj n\omega_0 RL}{R + \jj n\omega_0 L}} \nonumber\\
+    &= \frac{(\jj n\omega_0)^2 RLC}{R + \jj n\omega_0 L + (\jj n\omega_0)^2 RLC}
+     = \frac{-(n\omega_0)^2 LC}{\Big[1 - (n\omega_0)^2 LC\Big] + \jj\,\dfrac{n\omega_0 L}{R}}.
+    \label{eq:transfer_H}
+\end{align}
+
+Từ \eqref{eq:transfer_H}, mô-đun và góc pha của hàm truyền $H(\jj n\omega_0)$ tại bậc hài $n \ge 1$ được xác định chính xác bằng:
+\begin{align}
+    |H(\jj n\omega_0)| &= \frac{(n\omega_0)^2 LC}{\sqrt{\Big[1 - (n\omega_0)^2 LC\Big]^2 + \left(\dfrac{n\omega_0 L}{R}\right)^2}}, \label{eq:H_mag}\\
+    \varphi_{H,n} &= \arg H(\jj n\omega_0) = 180^\circ - \operatorname{atan2}\!\left(\frac{n\omega_0 L}{R},\; 1 - (n\omega_0)^2 LC\right) \in (0^\circ,\, 180^\circ). \label{eq:H_phase}
+\end{align}
+\textit{(Kiểm chứng giới hạn vật lý: khi $n\omega_0 \to 0^+$ thì $|H| \to 0,\; \varphi_H \to 180^\circ$; tại tần số cộng hưởng $\omega_r = 1/\sqrt{LC}$ thì $\varphi_H = 90^\circ$; khi $n\omega_0 \to \infty$ thì $|H| \to 1,\; \varphi_H \to 0^\circ$ -- hoàn toàn đúng bản chất bộ lọc thông cao bậc 2.)}
+
+\subsubsection*{3. Biểu thức tổng quát của đáp ứng xác lập $u_0(t)$}
+Áp dụng nguyên lý xếp chồng cho từng thành phần của chuỗi nguồn \eqref{eq:e_fourier_sym}, ta thu được đáp ứng điện áp xác lập dưới dạng chuỗi vô hạn:
+\begin{equation}
+    u_0(t) = \frac{E_m}{2}\,|H(\jj\omega_0)|\sin(\omega_0 t + \varphi_{H,1})
+           - \frac{2E_m}{\pi}\sum_{k=1}^{\infty} \frac{|H(\jj 2k\omega_0)|}{4k^2 - 1}\cos(2k\omega_0 t + \varphi_{H,2k})
+           \quad (\text{V}).
+    \label{eq:u0_inf}
+\end{equation}
+Viết gọn toàn bộ về dạng chuẩn biên độ dương theo hàm $\cos$:
+\begin{equation}
+    u_0(t) = U_{0,1}\cos(\omega_0 t + \psi_1) + \sum_{k=1}^{\infty} U_{0,2k}\cos(2k\omega_0 t + \psi_{2k}) \quad (\text{V}),
+    \label{eq:u0_inf_cos}
+\end{equation}
+trong đó:
+\begin{align}
+    U_{0,1} &= \frac{E_m}{2}|H(\jj\omega_0)|, & \psi_1 &= \varphi_{H,1} - 90^\circ, \\
+    U_{0,2k} &= \frac{2E_m}{\pi(4k^2 - 1)}|H(\jj 2k\omega_0)|, & \psi_{2k} &= \varphi_{H,2k} - 180^\circ \quad (k = 1, 2, 3, \dots).
+\end{align}
+
+Hình~\ref{fig:bode_spectrum} trình bày đặc tuyến biên độ $|H(f)|$ của mạch cùng phổ biên độ nguồn $|E_n|$ và ngõ ra $U_{0,n}$. Có thể thấy rõ vùng cộng hưởng quanh $f_r \approx 317{,}04\text{ Hz}$ nâng mạnh đóng góp của các sóng hài bậc $4$, $6$, $8$, đồng thời làm cho biên độ hài bậc 2 ($U_{0,2} = 1{,}1423\text{ V}$) và hài bậc 4 ($U_{0,4} = 0{,}8170\text{ V}$) ở ngõ ra thậm chí lớn hơn cả hài cơ bản bậc 1 ($U_{0,1} = 0{,}6239\text{ V}$).
+
+\begin{figure}[!htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            name=bodeplot,
+            width=6.4cm, height=5.4cm,
+            xlabel={Tần số $f$ (Hz)},
+            ylabel={Độ lớn hàm truyền $|H(\jj 2\pi f)|$},
+            xmin=0, xmax=1000,
+            ymin=0, ymax=1.32,
+            grid=both,
+            grid style={gray!25},
+            title={\small (a) Đặc tuyến biên độ $|H(f)|$},
+            legend pos=south east,
+            legend style={font=\scriptsize}
+        ]
+            \addplot[hcmutblue, line width=1.2pt] table[x=f_Hz, y=H_mag] {data/bode.dat};
+            \addlegendentry{$|H(f)|$}
+            \addplot[accentred, only marks, mark=*, mark size=2pt] table[x=f_Hz, y=H_mag] {data/spectrum.dat};
+            \addlegendentry{Các hài $n=0,1,2,4,\dots$}
+            \draw[accentgreen, dashed, line width=0.8pt] (axis cs:317.04,0) -- (axis cs:317.04,1.32);
+            \node[accentgreen, anchor=south west, font=\scriptsize] at (axis cs:325,0.06) {$f_r \approx 317\text{ Hz}$};
+        \end{axis}
+
+        \begin{axis}[
+            at={($(bodeplot.east)+(1.7cm,0)$)},
+            anchor=west,
+            width=6.4cm, height=5.4cm,
+            ybar,
+            bar width=7pt,
+            enlarge x limits=0.14,
+            xlabel={Bậc sóng hài $n$},
+            ylabel={Biên độ đỉnh $U_{0,n}$ (V)},
+            symbolic x coords={0,1,2,4,6,8,10,12},
+            xtick=data,
+            ymin=0, ymax=1.38,
+            ymajorgrids=true,
+            grid style={gray!25},
+            title={\small (b) Phổ biên độ ngõ ra $U_{0,n}$},
+            nodes near coords,
+            every node near coord/.append style={
+                font=\tiny,
+                rotate=45,
+                anchor=west,
+                /pgf/number format/fixed,
+                /pgf/number format/precision=2
+            },
+            nodes near coords align={vertical}
+        ]
+            \addplot[fill=hcmutblue!75, draw=hcmutblue] table[x=n, y=U0_amp] {data/spectrum.dat};
+        \end{axis}
+    \end{tikzpicture}
+    \caption{(a) Đặc tuyến biên độ bộ lọc thông cao bậc 2 $|H(f)|$ với $f_r \approx 317{,}04\text{ Hz}$ và (b) phổ biên độ điện áp ngõ ra $U_{0,n}$ tại các sóng hài khác $0$ đầu tiên.}
+    \label{fig:bode_spectrum}
+\end{figure}
+
+% ==============================================================================
+\subsection{Câu c: Xấp xỉ \texorpdfstring{$u_0(t)$}{u0(t)} với 3 sóng hài và 5 sóng hài khác 0 đầu tiên}
+
+Do thành phần DC ($n=0$) bị tụ $C$ chặn hoàn toàn ($U_{0,0} = 0$) và các sóng hài lẻ bậc $n \ge 3$ có hệ số nguồn bằng $0$, nên:
+\begin{itemize}
+    \item \textbf{3 sóng hài khác $0$ đầu tiên} của $u_0(t)$ gồm $n \in \{1, 2, 4\}$ (ứng với tần số $80\text{ Hz}$, $160\text{ Hz}$, $320\text{ Hz}$).
+    \item \textbf{5 sóng hài khác $0$ đầu tiên} của $u_0(t)$ gồm $n \in \{1, 2, 4, 6, 8\}$ (ứng với tần số $80\text{ Hz}$, $160\text{ Hz}$, $320\text{ Hz}$, $480\text{ Hz}$, $640\text{ Hz}$).
+\end{itemize}
+
+Thay số $E_m = 19\text{ V}$, $f_0 = 80\text{ Hz}$, $R = 28\ \Omega$, $L = 14\text{ mH}$, $C = 18\ \mu\text{F}$ vào \eqref{eq:H_mag}--\eqref{eq:u0_inf_cos}, ta lập được bảng thông số từng hài như trong Bảng~\ref{tab:harmonics}.
+
+\begin{table}[!htbp]
+    \centering
+    \caption{Tổng hợp thông số các sóng hài khác $0$ đầu tiên của nguồn $e(t)$ và đáp ứng $u_0(t)$ (Đề~5).}
+    \label{tab:harmonics}
+    \vspace{4pt}
+    \small
+    \begin{tabular}{|c|r|r|r|r|r|r|r|}
+        \toprule
+        \textbf{Bậc $n$} & \textbf{$f_n$ (Hz)} & \textbf{Biên độ $E_n$ (V)} & \textbf{$|H(\jj n\omega_0)|$} & \textbf{$\varphi_{H,n}$ ($^\circ$)} & \textbf{$U_{0,n}$ (V)} & \textbf{$\psi_n$ ($\cos$, $^\circ$)} & \textbf{$\psi_n$ ($\sin$, $^\circ$)} \\
+        \midrule
+        $0$ (DC) & $0$   & $6{,}0479$ & $0{,}0000$ & --          & $0{,}0000$ & --          & -- \\
+        \hline
+        $1$      & $80$  & $9{,}5000$ & $0{,}0657$ & $+164{,}97$ & $0{,}6239$ & $+74{,}97$  & $+164{,}97$ \\
+        $2$      & $160$ & $4{,}0319$ & $0{,}2833$ & $+146{,}00$ & $1{,}1423$ & $-34{,}00$  & $+56{,}00$  \\
+        $4$      & $320$ & $0{,}8064$ & $1{,}0132$ & $+88{,}93$  & $0{,}8170$ & $-91{,}07$  & $-1{,}07$   \\
+        \hline
+        $6$      & $480$ & $0{,}3456$ & $1{,}1542$ & $+49{,}41$  & $0{,}3989$ & $-130{,}59$ & $-40{,}59$  \\
+        $8$      & $640$ & $0{,}1920$ & $1{,}1091$ & $+33{,}18$  & $0{,}2130$ & $-146{,}82$ & $-56{,}82$  \\
+        \hline
+        \multicolumn{8}{|l|}{\textit{Tham khảo thêm hai hài kế tiếp (đánh giá đuôi chuỗi):}} \\
+        $10$     & $800$ & $0{,}1222$ & $1{,}0744$ & $+25{,}09$  & $0{,}1313$ & $-154{,}91$ & $-64{,}91$  \\
+        $12$     & $960$ & $0{,}0846$ & $1{,}0529$ & $+20{,}26$  & $0{,}0891$ & $-159{,}74$ & $-69{,}74$  \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsubsection*{1. Biểu thức xấp xỉ $u_0(t)$ với 3 sóng hài khác $0$ đầu tiên ($n = 1, 2, 4$)}
+Viết theo dạng chuẩn hàm $\cos$ (biên độ dương):
+\begin{align}
+    u_{0,3\text{h}}(t)
+    &= 0{,}6239\cos(160\pi t + 74{,}97^\circ)
+     + 1{,}1423\cos(320\pi t - 34{,}00^\circ) \nonumber\\
+    &\quad + 0{,}8170\cos(640\pi t - 91{,}07^\circ) \quad (\text{V}),
+    \label{eq:u0_3h}
+\end{align}
+(tương đương theo dạng \eqref{eq:u0_inf}: $0{,}6239\sin(160\pi t + 164{,}97^\circ) - 1{,}1423\cos(320\pi t + 146{,}00^\circ) - 0{,}8170\cos(640\pi t + 88{,}93^\circ)\text{ V}$).
+
+Giá trị hiệu dụng theo định lý Parseval:
+\begin{equation}
+    U_{0,3\text{h},\RMS} = \sqrt{\frac{1}{2}\left(0{,}6239^2 + 1{,}1423^2 + 0{,}8170^2\right)} = 1{,}0866\text{ V}.
+\end{equation}
+
+\subsubsection*{2. Biểu thức xấp xỉ $u_0(t)$ với 5 sóng hài khác $0$ đầu tiên ($n = 1, 2, 4, 6, 8$)}
+\begin{align}
+    u_{0,5\text{h}}(t)
+    &= 0{,}6239\cos(160\pi t + 74{,}97^\circ)
+     + 1{,}1423\cos(320\pi t - 34{,}00^\circ) \nonumber\\
+    &\quad + 0{,}8170\cos(640\pi t - 91{,}07^\circ)
+     + 0{,}3989\cos(960\pi t - 130{,}59^\circ) \nonumber\\
+    &\quad + 0{,}2130\cos(1280\pi t - 146{,}82^\circ) \quad (\text{V}).
+    \label{eq:u0_5h}
+\end{align}
+
+Giá trị hiệu dụng theo định lý Parseval:
+\begin{equation}
+    U_{0,5\text{h},\RMS} = \sqrt{\frac{1}{2}\left(0{,}6239^2 + 1{,}1423^2 + 0{,}8170^2 + 0{,}3989^2 + 0{,}2130^2\right)} = 1{,}1327\text{ V},
+\end{equation}
+so với giá trị hiệu dụng lý thuyết chính xác (tính với chuỗi vô hạn) là $U_{0,\infty,\RMS} = 1{,}1408\text{ V}$.

@@ -1,0 +1,87 @@
+% ==============================================================================
+% CHƯƠNG 5: KẾT LUẬN, TÀI LIỆU THAM KHẢO & PHỤ LỤC
+% ==============================================================================
+\section{Kết luận}
+
+Qua quá trình phân tích lý thuyết bằng chuỗi Fourier kết hợp mô phỏng xác lập trên LTspice cho mạch RLC Đề~5 ($N_1 = 2,\; N_2 = 3,\; N_3 = 1$), nhóm đã hoàn thành trọn vẹn các mục tiêu đặt ra:
+\begin{itemize}
+    \item Thiết lập đúng chuỗi Fourier lượng giác của nguồn áp chỉnh lưu bán kỳ $e(t)$ gồm thành phần một chiều $a_0 = 19/\pi \approx 6{,}0479\text{ V}$, hài cơ bản $n=1$ và dãy hài chẵn $n = 2k$.
+    \item Xác định hàm truyền áp $H(\jj n\omega_0)$ dạng lọc thông cao bậc 2 có tần số riêng $f_r \approx 317{,}04\text{ Hz}$ và hệ số tắt dần $\zeta \approx 0{,}498$, chứng minh thành phần DC bị chặn hoàn toàn ở ngõ ra $u_0(t)$ và lập biểu thức đáp ứng tổng quát cùng xấp xỉ tường minh cho 3 sóng hài ($n=1,2,4$) và 5 sóng hài ($n=1,2,4,6,8$) khác $0$ đầu tiên.
+    \item Xây dựng thành công 01 file mô phỏng LTspice duy nhất (\texttt{De5\_RLC\_Fourier.asc}) chạy sạch không lỗi, tích hợp cả mạch nguồn thực (Câu~d) và hai mạch xếp chồng sóng hài (Câu~e) ở chế độ xác lập chuẩn.
+    \item Đối chiếu định lượng chứng minh mô phỏng xếp chồng khớp lý thuyết đến $99{,}999\%$ ($\text{NRMSE} \approx 0{,}001\%$), đồng thời làm rõ sự hội tụ mạnh khi tăng từ 3 hài lên 5 hài (năng lượng nắm giữ tăng từ $90{,}73\%$ lên $98{,}59\%$, sai số đỉnh giảm từ $-22{,}74\%$ xuống $-0{,}45\%$, NRMSE giảm từ $30{,}43\%$ xuống $11{,}88\%$) và giải thích đầy đủ bản chất vật lý tại các điểm gãy đạo hàm của nguồn chỉnh lưu bán kỳ.
+\end{itemize}
+
+\begin{thebibliography}{9}
+    \bibitem{sadiku}
+    C.~K.~Alexander và M.~N.~O.~Sadiku, \textit{Fundamentals of Electric Circuits}, 7th ed., McGraw-Hill Education, 2021.
+    \bibitem{hcmut_gtm}
+    Bộ môn Cơ sở Kỹ thuật Điện, Khoa Điện -- Điện tử, Trường Đại học Bách Khoa TP.HCM, \textit{Giáo trình Giải tích mạch (EE2033)}, NXB ĐHQG TP.HCM.
+    \bibitem{ltspice}
+    Analog Devices, \textit{LTspice Simulator User Documentation}, Version 26.1, 2026.
+\end{thebibliography}
+
+% ==============================================================================
+\clearpage
+\appendix
+\section{Phụ lục: Netlist và kết quả đo \texttt{.meas} từ LTspice}
+
+Dưới đây là trích đoạn netlist sinh tự động từ file mô phỏng \texttt{sim/De5\_RLC\_Fourier.asc} cùng kết quả đo xác lập trích trực tiếp từ tệp \texttt{De5\_RLC\_Fourier.log} (LTspice 26.1.1).
+
+\begin{lstlisting}[caption={Trích đoạn netlist và câu lệnh mô phỏng trong \texttt{De5\_RLC\_Fourier.asc}.}]
+* CAU d: Nguon chinh luu ban ky thuc te
+B_real e_real 0 V=19*max(0,sin(2*pi*80*time))
+C1 e_real u0_real 18u
+R1 u0_real 0 28
+L1 u0_real 0 14m Rser=0
+
+* CAU e (3 song hai n=1,2,4 + DC)
+V3_1 e_3h N001 SINE(0 9.5 80 0 0 0)
+V3_2 N001 N003 SINE(0 4.031925 160 0 0 -90)
+V3_4 N003 N005 SINE(0 0.806385 320 0 0 -90)
+V3_0 N005 0 6.047888
+C2 e_3h u0_3h 18u
+R2 u0_3h 0 28
+L2 u0_3h 0 14m Rser=0
+
+* CAU e (5 song hai n=1,2,4,6,8 + DC)
+V5_1 e_5h N002 SINE(0 9.5 80 0 0 0)
+V5_2 N002 N004 SINE(0 4.031925 160 0 0 -90)
+V5_4 N004 N006 SINE(0 0.806385 320 0 0 -90)
+V5_6 N006 N007 SINE(0 0.345594 480 0 0 -90)
+V5_8 N007 N008 SINE(0 0.191996 640 0 0 -90)
+V5_0 N008 0 6.047888
+C3 e_5h u0_5h 18u
+R3 u0_5h 0 28
+L3 u0_5h 0 14m Rser=0
+
+* Cau hinh xac lap va do tu dong (cua so 3T = 37.5 ms sau 8T qua do)
+.tran 0 137.5m 100m 5u
+.options plotwinsize=0
+.meas TRAN ureal_max MAX V(u0_real)
+.meas TRAN ureal_min MIN V(u0_real)
+.meas TRAN ureal_pp  PP  V(u0_real)
+.meas TRAN ureal_rms RMS V(u0_real)
+.meas TRAN u3_max    MAX V(u0_3h)
+.meas TRAN u3_min    MIN V(u0_3h)
+.meas TRAN u3_pp     PP  V(u0_3h)
+.meas TRAN u3_rms    RMS V(u0_3h)
+.meas TRAN u5_max    MAX V(u0_5h)
+.meas TRAN u5_min    MIN V(u0_5h)
+.meas TRAN u5_pp     PP  V(u0_5h)
+.meas TRAN u5_rms    RMS V(u0_5h)
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Kết quả đo tự động trích từ tệp \texttt{De5\_RLC\_Fourier.log} (LTspice 26.1.1).}]
+ureal_max: MAX(V(u0_real))=2.61581965187 FROM 0.1 TO 0.1375
+ureal_min: MIN(V(u0_real))=-1.49866119078 FROM 0.1 TO 0.1375
+ureal_pp:  PP(V(u0_real))=4.11448084264 FROM 0.1 TO 0.1375
+ureal_rms: RMS(V(u0_real))=1.14079334567 FROM 0.1 TO 0.1375
+u3_max:    MAX(V(u0_3h))=2.02098604659 FROM 0.1 TO 0.1375
+u3_min:    MIN(V(u0_3h))=-1.77865552611 FROM 0.1 TO 0.1375
+u3_pp:     PP(V(u0_3h))=3.7996415727 FROM 0.1 TO 0.1375
+u3_rms:    RMS(V(u0_3h))=1.08663228547 FROM 0.1 TO 0.1375
+u5_max:    MAX(V(u0_5h))=2.60395225586 FROM 0.1 TO 0.1375
+u5_min:    MIN(V(u0_5h))=-1.54053912379 FROM 0.1 TO 0.1375
+u5_pp:     PP(V(u0_5h))=4.14449137965 FROM 0.1 TO 0.1375
+u5_rms:    RMS(V(u0_5h))=1.13269557488 FROM 0.1 TO 0.1375
+\end{lstlisting}

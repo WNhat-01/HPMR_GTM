@@ -1,0 +1,23 @@
+# LaTeX build artifacts
+report/*.aux
+report/*.fdb_latexmk
+report/*.fls
+report/*.lof
+report/*.log
+report/*.lot
+report/*.out
+report/*.synctex.gz
+report/*.toc
+report/*.bbl
+report/*.blg
+
+# LTspice large / temporary outputs (keep .asc, .net, .log)
+sim/*.raw
+sim/*.op.raw
+sim/*.db
+sim/*.fft
+
+# OS / Editor junk
+.DS_Store
+Thumbs.db
+desktop.ini

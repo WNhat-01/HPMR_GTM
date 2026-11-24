@@ -1,0 +1,174 @@
+% ==============================================================================
+% CHƯƠNG 4: SO SÁNH, ĐÁNH GIÁ ĐỘ CHÍNH XÁC VÀ SỰ HỘI TỤ (CÂU e)
+% ==============================================================================
+\section{So sánh kết quả, đánh giá độ chính xác và sự hội tụ}
+
+\subsection{Bảng so sánh định lượng giữa Lý thuyết (c), Mô phỏng xếp chồng (e) và Nguồn thực (d)}
+
+Để đánh giá khách quan mức độ chính xác và tốc độ hội tụ, nhóm sử dụng ba nhóm chỉ số định lượng trong đúng 1 chu kỳ xác lập $T = 12{,}5\text{ ms}$:
+\begin{enumerate}
+    \item \textbf{Các đặc trưng biên độ và năng lượng:} $U_{\max}$, $U_{\min}$, $U_{pp} = U_{\max} - U_{\min}$, giá trị hiệu dụng $U_{\RMS}$, và tỷ lệ năng lượng tín hiệu nắm giữ $\eta_E = (U_{\RMS}/U_{\text{real},\RMS})^2 \times 100\%$.
+    \item \textbf{Sai số tương đối từng chỉ số so với nguồn thực (Câu d):} $\delta_X = \dfrac{X - X_{\text{real}}}{|X_{\text{real}}|} \times 100\%$.
+    \item \textbf{Sai số toàn phương trung bình theo thời gian (RMSE và NRMSE):}
+    \begin{equation}
+        \text{RMSE} = \sqrt{\frac{1}{T}\int_{0}^{T} \Big[u(t) - u_{\text{ref}}(t)\Big]^2 \dd t}, \qquad
+        \text{NRMSE} = \frac{\text{RMSE}}{U_{\text{ref},\RMS}} \times 100\%.
+    \end{equation}
+\end{enumerate}
+
+Toàn bộ kết quả đối chiếu giữa tính toán lý thuyết (Câu~c), mô phỏng xếp chồng (Câu~e) và mô phỏng nguồn thực (Câu~d) được tổng hợp trong Bảng~\ref{tab:comparison_main} và Bảng~\ref{tab:comparison_err}.
+
+\begin{table}[!htbp]
+    \centering
+    \caption{So sánh các thông số đặc trưng của điện áp xác lập $u_0(t)$ giữa Câu~c, Câu~e và Câu~d.}
+    \label{tab:comparison_main}
+    \vspace{4pt}
+    \small
+    \begin{tabular}{|l|c|c|c|c|c|}
+        \toprule
+        \textbf{Trường hợp} & \textbf{$U_{\max}$ (V)} & \textbf{$U_{\min}$ (V)} & \textbf{$U_{pp}$ (V)} & \textbf{$U_{\RMS}$ (V)} & \textbf{$\eta_E$ (\%)} \\
+        \midrule
+        Lý thuyết 3 hài (Câu c)       & $2{,}0210$ & $-1{,}7786$ & $3{,}7996$ & $1{,}0866$ & $90{,}73\%$ \\
+        Mô phỏng 3 hài (Câu e)        & $2{,}0210$ & $-1{,}7787$ & $3{,}7996$ & $1{,}0866$ & $90{,}73\%$ \\
+        \hline
+        Lý thuyết 5 hài (Câu c)       & $2{,}6039$ & $-1{,}5405$ & $4{,}1445$ & $1{,}1327$ & $98{,}59\%$ \\
+        Mô phỏng 5 hài (Câu e)        & $2{,}6040$ & $-1{,}5405$ & $4{,}1445$ & $1{,}1327$ & $98{,}59\%$ \\
+        \hline
+        Lý thuyết chuỗi vô hạn ($400$ hài) & $2{,}6159$ & $-1{,}4986$ & $4{,}1145$ & $1{,}1408$ & $100{,}00\%$ \\
+        \textbf{Mô phỏng nguồn thực (Câu d)} & \textbf{2,6158} & \textbf{$-$1,4987} & \textbf{4,1145} & \textbf{1,1408} & \textbf{100,00\%} \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}[!htbp]
+    \centering
+    \caption{Bảng đánh giá sai số tương đối, RMSE, NRMSE và sai số đỉnh tuyệt đối.}
+    \label{tab:comparison_err}
+    \vspace{4pt}
+    \footnotesize
+    \setlength{\tabcolsep}{3.2pt}
+    \begin{tabular}{|l|c|c|c|c|c|c|}
+        \toprule
+        \textbf{Cặp đối chiếu} & \textbf{$\delta_{U_{\max}}$} & \textbf{$\delta_{U_{pp}}$} & \textbf{$\delta_{U_{\RMS}}$} & \textbf{RMSE (V)} & \textbf{NRMSE} & \textbf{$\max|\Delta u_0|$} \\
+        \midrule
+        Lý thuyết 3 hài vs MP 3 hài      & $<0{,}005\%$ & $<0{,}005\%$ & $<0{,}005\%$ & $0{,}000011$ & $0{,}0010\%$ & $0{,}00002\text{ V}$ \\
+        Lý thuyết 5 hài vs MP 5 hài      & $<0{,}005\%$ & $<0{,}005\%$ & $<0{,}005\%$ & $0{,}000013$ & $0{,}0011\%$ & $0{,}00003\text{ V}$ \\
+        \hline
+        3 hài (e) vs Nguồn thực (d)      & $-22{,}74\%$ & $-7{,}65\%$  & $-4{,}75\%$  & $0{,}3472$   & $30{,}43\%$  & $1{,}1047\text{ V}$  \\
+        5 hài (e) vs Nguồn thực (d)      & $-0{,}45\%$  & $+0{,}73\%$  & $-0{,}71\%$  & $0{,}1355$   & $11{,}88\%$  & $0{,}6669\text{ V}$  \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+% ==============================================================================
+\subsection{Đồ thị đối chiếu dạng sóng và sai số tức thời}
+
+Hình~\ref{fig:theory_vs_sim} đối chiếu trực tiếp kết quả tính tay từ công thức \eqref{eq:u0_3h}--\eqref{eq:u0_5h} (Câu~c) với kết quả mô phỏng xếp chồng trên LTspice (Câu~e) trong 1 chu kỳ xác lập: đường mô phỏng và đường lý thuyết \textbf{trùng khít hoàn toàn} trên toàn bộ chu kỳ.
+
+\begin{figure}[!htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=14.6cm, height=5.8cm,
+            xlabel={Thời gian xác lập $t$ trong 1 chu kỳ (ms)},
+            ylabel={Điện áp $u_0(t)$ (V)},
+            xmin=0, xmax=12.5,
+            ymin=-2.05, ymax=3.05,
+            xtick={0,2.5,5,6.25,7.5,10,12.5},
+            grid=both,
+            grid style={gray!25},
+            legend pos=north west,
+            legend style={font=\small, fill=white, fill opacity=0.92}
+        ]
+            \addplot[accentorange, line width=1.8pt] table[x=t_ms, y=u0_3h_sim] {data/waveforms_1T.dat};
+            \addlegendentry{Mô phỏng LTspice -- 3 hài (Câu e)}
+            \addplot[black, dashed, line width=1.1pt] table[x=t_ms, y=u0_3h_th] {data/waveforms_1T.dat};
+            \addlegendentry{Lý thuyết -- 3 hài (Câu c)}
+
+            \addplot[hcmutblue, line width=1.8pt] table[x=t_ms, y=u0_5h_sim] {data/waveforms_1T.dat};
+            \addlegendentry{Mô phỏng LTspice -- 5 hài (Câu e)}
+            \addplot[accentred, dotted, line width=1.4pt] table[x=t_ms, y=u0_5h_th] {data/waveforms_1T.dat};
+            \addlegendentry{Lý thuyết -- 5 hài (Câu c)}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{Đối chiếu trực tiếp lý thuyết (Câu~c) và mô phỏng xếp chồng LTspice (Câu~e) trên 1 chu kỳ xác lập: hai cặp đường cong trùng khít với NRMSE $\approx 0{,}001\%$.}
+    \label{fig:theory_vs_sim}
+\end{figure}
+
+Hình~\ref{fig:convergence} so sánh trực tiếp dạng sóng xếp chồng 3 hài và 5 hài với đáp ứng nguồn thực (Câu~d), kèm đồ thị sai số tức thời $\Delta u_0(t) = u_{0,\text{xh}}(t) - u_{0,\text{real}}(t)$ để làm rõ bản chất sự hội tụ.
+
+\begin{figure}[!htbp]
+    \centering
+    \begin{tikzpicture}
+        \begin{axis}[
+            name=conv_top,
+            width=14.6cm, height=5.8cm,
+            ylabel={Điện áp $u_0(t)$ (V)},
+            xmin=0, xmax=12.5,
+            ymin=-2.05, ymax=3.05,
+            xticklabels=\empty,
+            grid=both,
+            grid style={gray!25},
+            legend pos=north west,
+            legend style={font=\small, fill=white, fill opacity=0.92},
+            title={\small So sánh sự hội tụ dạng sóng (trên) và sai số tức thời $\Delta u_0(t)$ (dưới)}
+        ]
+            \addplot[black, line width=1.4pt] table[x=t_ms, y=u0_real] {data/waveforms_1T.dat};
+            \addlegendentry{Nguồn thực (Câu d)}
+            \addplot[accentorange, dashed, line width=1.1pt] table[x=t_ms, y=u0_3h_sim] {data/waveforms_1T.dat};
+            \addlegendentry{Xếp chồng 3 hài ($n=1,2,4$)}
+            \addplot[hcmutblue, line width=1.15pt] table[x=t_ms, y=u0_5h_sim] {data/waveforms_1T.dat};
+            \addlegendentry{Xếp chồng 5 hài ($n=1,2,4,6,8$)}
+        \end{axis}
+
+        \begin{axis}[
+            at={($(conv_top.south)+(0,-0.35cm)$)},
+            anchor=north,
+            width=14.6cm, height=4.1cm,
+            xlabel={Thời gian xác lập $t$ trong 1 chu kỳ (ms)},
+            ylabel={Sai số $\Delta u_0(t)$ (V)},
+            xmin=0, xmax=12.5,
+            ymin=-1.3, ymax=1.3,
+            xtick={0,2.5,5,6.25,7.5,10,12.5},
+            grid=both,
+            grid style={gray!25},
+            legend pos=south east,
+            legend style={font=\small, fill=white, fill opacity=0.92}
+        ]
+            \addplot[accentorange, dashed, line width=1.05pt] table[x=t_ms, y=err_3h] {data/waveforms_1T.dat};
+            \addlegendentry{$\Delta u_{0,3\text{h}}(t) = u_{0,3\text{h}} - u_{0,\text{real}}$}
+            \addplot[hcmutblue, line width=1.1pt] table[x=t_ms, y=err_5h] {data/waveforms_1T.dat};
+            \addlegendentry{$\Delta u_{0,5\text{h}}(t) = u_{0,5\text{h}} - u_{0,\text{real}}$}
+            \draw[gray, dotted, line width=0.7pt] (axis cs:0,0) -- (axis cs:12.5,0);
+        \end{axis}
+    \end{tikzpicture}
+    \caption{So sánh dạng sóng $u_0(t)$ giữa Câu~d và Câu~e (3 hài, 5 hài) cùng sai số tức thời $\Delta u_0(t)$ trong 1 chu kỳ $T = 12{,}5\text{ ms}$.}
+    \label{fig:convergence}
+\end{figure}
+
+% ==============================================================================
+\subsection{Nhận xét độ chính xác, sự hội tụ và bản chất vật lý của mạch}
+
+Từ các số liệu định lượng ở Bảng~\ref{tab:comparison_main}--\ref{tab:comparison_err} và đồ thị Hình~\ref{fig:theory_vs_sim}--\ref{fig:convergence}, nhóm rút ra bốn nhận xét chính:
+
+\begin{enumerate}
+    \item \textbf{Khẳng định độ chính xác tuyệt đối giữa Lý thuyết (c) và Mô phỏng xếp chồng (e):}
+    Trong cả hai trường hợp 3 sóng hài và 5 sóng hài, sai số toàn phương trung bình giữa biểu thức giải tích và mô phỏng LTspice chỉ ở mức \textbf{$11\text{--}13\ \mu\text{V}$} ($\text{NRMSE} \approx \mathbf{0{,}001\%}$). Sai lệch vi mô này hoàn toàn xuất phát từ việc làm tròn biên độ nguồn đến 6 chữ số thập phân trong LTspice và sai số tích phân số ứng với bước thời gian $\Delta t_{\max} = 5\ \mu\text{s}$. Điều này chứng minh cả phép khai triển Fourier, hàm truyền phức $H(\jj n\omega_0)$, quy đổi pha ban đầu lẫn sơ đồ mô phỏng LTspice đều chính xác.
+
+    \item \textbf{Hiệu quả hội tụ rất rõ khi tăng từ 3 sóng hài lên 5 sóng hài:}
+    \begin{itemize}
+        \item Ở mức \textbf{3 sóng hài} ($n = 1, 2, 4$), mô hình nắm giữ $90{,}73\%$ năng lượng ($U_{\RMS}$ lệch $-4{,}75\%$) nhưng sai lệch đáng kể về biên độ đỉnh ($U_{\max}$ thiếu tới $-22{,}74\%$, NRMSE còn $30{,}43\%$) và các góc nhọn bị làm tròn mạnh.
+        \item Khi bổ sung hai sóng hài kế tiếp ($n = 6$ và $n = 8$) để thành \textbf{5 sóng hài}, năng lượng nắm giữ vọt lên \textbf{$98{,}59\%$}, sai số $U_{\RMS}$ giảm còn chỉ \textbf{$-0{,}71\%$}, sai số đỉnh $U_{\max}$ giảm mạnh từ $-22{,}74\%$ xuống còn \textbf{$-0{,}45\%$}, và NRMSE giảm hơn $2{,}5$ lần xuống còn \textbf{$11{,}88\%$}.
+    \end{itemize}
+
+    \item \textbf{Giải thích bản chất vật lý đặc trưng của mạch Đề~5 (lọc thông cao bậc 2 gần cộng hưởng):}
+    Khác với các mạch lọc thông thấp vốn dập tắt nhanh sóng hài bậc cao theo quy luật $1/n^2$ hay $1/n^3$, mạch Đề~5 là \textbf{bộ lọc thông cao bậc 2} có:
+    \begin{itemize}
+        \item Độ lợi $|H(f)| \to 1$ khi $f \to \infty$ (không dập tắt đuôi hài bậc cao của nguồn);
+        \item Hệ số tắt dần $\zeta = 0{,}498 < 0{,}707$ tạo đỉnh cộng hưởng nhẹ ngay vùng hài bậc 6 ($|H_6| = 1{,}1542$, $|H_8| = 1{,}1091$).
+    \end{itemize}
+    Chính vì vậy, đóng góp của $n = 6$ ($U_{0,6} = 0{,}3989\text{ V}$) và $n = 8$ ($U_{0,8} = 0{,}2130\text{ V}$) còn rất lớn so với hài cơ bản ($U_{0,1} = 0{,}6239\text{ V}$). Do đó, việc bỏ qua hai hài này ở xấp xỉ 3 hài gây sai số lớn, còn khi đưa chúng vào ở xấp xỉ 5 hài thì độ chính xác cải thiện đột biến.
+
+    \item \textbf{Phân bố sai số tức thời theo thời gian:}
+    Quan sát Hình~\ref{fig:convergence} (biểu đồ dưới) thấy sai số tức thời $|\Delta u_0(t)|$ đạt cực đại đúng tại $t = 0\text{ ms}$ và $t = 6{,}25\text{ ms}$ ($T/2$) với đỉnh $1{,}1047\text{ V}$ (3 hài) giảm xuống $0{,}6669\text{ V}$ (5 hài). Nguyên nhân là tại $t = 0$ và $t = T/2$, nguồn chỉnh lưu bán kỳ tuy liên tục nhưng có \textbf{bước nhảy đạo hàm bậc nhất} ($\Delta e'(t) = \pm E_m\omega_0$); qua mạch lọc thông cao bậc 2, bước nhảy đạo hàm này tạo ra các góc gãy sắc nét trong $u_0(t)$ đòi hỏi các hài bậc cao ($n \ge 10$, suy giảm chậm theo $\sim 1/n^2$) để tái tạo hoàn hảo. Ở các khoảng trơn giữa chu kỳ ($2\text{--}5\text{ ms}$ và $8\text{--}11\text{ ms}$), xấp xỉ 5 hài bám gần như tuyệt đối vào đáp ứng nguồn thực.
+\end{enumerate}

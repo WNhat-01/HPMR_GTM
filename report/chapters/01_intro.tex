@@ -1,0 +1,123 @@
+% ==============================================================================
+% CHƯƠNG 1: GIỚI THIỆU ĐỀ BÀI VÀ THÔNG SỐ CÁ THỂ HÓA
+% ==============================================================================
+\section{Giới thiệu đề bài và thông số cá thể hóa}
+
+\subsection{Phát biểu đề bài (Đề 5)}
+Cho mạch điện RLC như Hình~\ref{fig:de5_circuit}, kích thích bởi nguồn áp chỉnh lưu bán kỳ tuần hoàn với chu kỳ $T = 1/f_0$ có dạng:
+\begin{equation}
+    e(t) =
+    \begin{cases}
+        E_m \sin(2\pi f_0 t), & 0 \le t < T/2, \\
+        0,                    & T/2 \le t < T,
+    \end{cases}
+    \qquad e(t + T) = e(t) \quad (\text{V}).
+    \label{eq:source_def}
+\end{equation}
+
+\begin{figure}[!htbp]
+    \centering
+    \begin{tikzpicture}[>=Stealth, line width=0.95pt, scale=1.05]
+        % Nguồn áp e(t)
+        \draw (0,0) -- (0,0.85);
+        \draw (0,1.45) circle (0.6cm);
+        \node at (0,1.72) {$+$};
+        \node at (0,1.18) {$-$};
+        \node[left] at (-0.7,1.45) {$e(t)$};
+        \draw (0,2.05) -- (0,2.9) -- (1.55,2.9);
+
+        % Tụ điện C nối tiếp
+        \draw[line width=1.4pt] (1.55,2.45) -- (1.55,3.35);
+        \draw[line width=1.4pt] (1.85,2.45) -- (1.85,3.35);
+        \node[above] at (1.70,3.42) {$C$};
+
+        % Nhánh ngang phía trên đến R || L
+        \draw (1.85,2.9) -- (6.2,2.9);
+        \fill (3.5,2.9) circle (2.0pt);
+        \fill (5.1,2.9) circle (2.0pt);
+
+        % Điện trở R (vẽ zigzag chuẩn)
+        \draw (3.5,2.9) -- (3.5,2.2)
+            -- (3.3,2.08) -- (3.7,1.86) -- (3.3,1.64)
+            -- (3.7,1.42) -- (3.3,1.20) -- (3.7,0.98)
+            -- (3.5,0.85) -- (3.5,0);
+        \node[left] at (3.22,1.52) {$R$};
+
+        % Cuộn cảm L (vẽ 4 vòng cung chuẩn)
+        \draw (5.1,2.9) -- (5.1,2.25);
+        \draw (5.1,2.25) arc (90:-90:0.20);
+        \draw (5.1,1.85) arc (90:-90:0.20);
+        \draw (5.1,1.45) arc (90:-90:0.20);
+        \draw (5.1,1.05) arc (90:-90:0.20);
+        \draw (5.1,0.65) -- (5.1,0);
+        \node[left] at (4.95,1.45) {$L$};
+
+        % Cực đo điện áp ngõ ra u_0(t)
+        \filldraw[fill=white] (6.2,2.9) circle (2.3pt);
+        \filldraw[fill=white] (6.2,0) circle (2.3pt);
+        \node[right] at (6.35,2.75) {$+$};
+        \node[right] at (6.35,0.15) {$-$};
+        \node[right] at (6.45,1.45) {$u_0(t)$};
+
+        % Đường dây đất phía dưới
+        \draw (0,0) -- (6.2,0);
+        \fill (3.5,0) circle (2.0pt);
+        \fill (5.1,0) circle (2.0pt);
+    \end{tikzpicture}
+    \caption{Sơ đồ mạch điện RLC của Đề~5 với nguồn áp chỉnh lưu bán kỳ $e(t)$ và ngõ ra $u_0(t)$.}
+    \label{fig:de5_circuit}
+\end{figure}
+
+\textbf{Yêu cầu của đề bài:}
+\begin{itemize}
+    \item \textbf{Tính toán lý thuyết:}
+    \begin{enumerate}
+        \item[(a)] Khai triển chuỗi Fourier lượng giác cho nguồn áp $e(t)$.
+        \item[(b)] Lập biểu thức tổng quát cho điện áp ngõ ra $u_0(t)$ ở chế độ xác lập dưới dạng chuỗi vô hạn.
+        \item[(c)] Xấp xỉ $u_0(t)$ với 3 sóng hài và 5 sóng hài khác $0$ đầu tiên.
+    \end{enumerate}
+    \item \textbf{Mô phỏng trên LTspice:}
+    \begin{enumerate}
+        \item[(d)] Mô phỏng mạch với nguồn sóng thực tế (nguồn áp chỉnh lưu bán kỳ $e(t)$), trích xuất đồ thị đáp ứng xác lập $u_0(t)$.
+        \item[(e)] Mô phỏng mạch bằng cách xếp chồng các nguồn áp hình sin mắc nối tiếp tương ứng với 3 sóng hài và 5 sóng hài khác $0$ đầu tiên; quan sát $u_0(t)$ trong từng trường hợp, lập bảng so sánh và nhận xét độ chính xác cũng như sự hội tụ giữa tính toán lý thuyết~(c), mô phỏng xếp chồng~(e) và mô phỏng nguồn thực~(d).
+    \end{enumerate}
+\end{itemize}
+
+\subsection{Bộ thông số cá thể hóa và đặc trưng sơ bộ của mạch}
+Với bộ hệ số MSSV của nhóm là $N_1 = 2$, $N_2 = 3$, $N_3 = 1$, các thông số cụ thể của mạch được tính và tổng hợp trong Bảng~\ref{tab:params}.
+
+\begin{table}[!htbp]
+    \centering
+    \caption{Thông số cá thể hóa của mạch Đề~5 ứng với $N_1 = 2,\; N_2 = 3,\; N_3 = 1$.}
+    \label{tab:params}
+    \vspace{4pt}
+    \begin{tabular}{|l|c|c|c|}
+        \toprule
+        \textbf{Thông số} & \textbf{Công thức đề bài} & \textbf{Giá trị cụ thể} & \textbf{Đơn vị} \\
+        \midrule
+        Biên độ nguồn áp $E_m$      & $15 + 2N_1$  & $19$     & $\text{V}$ \\
+        Tần số cơ bản $f_0$         & $50 + 10N_2$ & $80$     & $\text{Hz}$ \\
+        Chu kỳ cơ bản $T = 1/f_0$   & $1/(50+10N_2)$ & $12{,}5$ & $\text{ms}$ \\
+        Tần số góc cơ bản $\omega_0 = 2\pi f_0$ & $2\pi f_0$ & $160\pi \approx 502{,}655$ & $\text{rad/s}$ \\
+        Điện trở $R$                & $25 + 3N_3$  & $28$     & $\Omega$ \\
+        Cuộn cảm $L$                & $12 + N_1$   & $14$     & $\text{mH}$ \\
+        Tụ điện $C$                 & $15 + N_2$   & $18$     & $\mu\text{F}$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Từ cấu trúc mạch gồm tụ $C$ mắc nối tiếp với cụm song song $(R \parallel L)$, có thể rút ra ngay ba đặc trưng vật lý quan trọng định hướng cho cả lý thuyết lẫn mô phỏng:
+\begin{enumerate}
+    \item \textbf{Mạch là bộ lọc thông cao bậc 2:} Tại tần số $f = 0$ (một chiều DC), tụ $C$ hở mạch và cuộn cảm $L$ ngắn mạch nên thành phần DC của nguồn bị chặn hoàn toàn, tức $U_{0,\text{DC}} = 0\text{ V}$. Ở tần số rất cao ($f \to \infty$), tụ $C$ gần như ngắn mạch nên $u_0(t)$ bám gần nguyên biên độ nguồn ($|H(\jj\omega)| \to 1$).
+    \item \textbf{Tần số dao động riêng và hệ số tắt dần:}
+    \begin{align}
+        f_r &= \frac{1}{2\pi\sqrt{LC}} = \frac{1}{2\pi\sqrt{14 \times 10^{-3} \times 18 \times 10^{-6}}} \approx 317{,}04\text{ Hz}, \\
+        \zeta &= \frac{1}{2R}\sqrt{\frac{L}{C}} = \frac{1}{2 \times 28}\sqrt{\frac{14 \times 10^{-3}}{18 \times 10^{-6}}} \approx 0{,}4980 < \frac{1}{\sqrt{2}}.
+    \end{align}
+    Do $f_r \approx 317{,}04\text{ Hz}$ nằm \textbf{rất sát sóng hài bậc 4} ($f_4 = 4f_0 = 320\text{ Hz}$) và $\zeta \approx 0{,}498 < 0{,}707$, đặc tuyến biên độ $|H(f)|$ có đỉnh cộng hưởng nhẹ ($|H|_{\max} > 1$) ở vùng các hài bậc 4--6.
+    \item \textbf{Thời gian quá độ rất ngắn:} Hằng số thời gian tắt dần của đường bao quá độ là
+    \begin{equation}
+        \tau = \frac{1}{\zeta\omega_r} = 2RC = 2 \times 28 \times 18 \times 10^{-6} = 1{,}008\text{ ms} \ll T = 12{,}5\text{ ms}.
+    \end{equation}
+    Sau khoảng $5\tau \approx 5{,}04\text{ ms}$ (chưa tới nửa chu kỳ), thành phần quá độ đã suy giảm trên $99{,}3\%$. Vì vậy, khi mô phỏng quá độ trong LTspice và bỏ qua $8$ chu kỳ đầu ($t_{\text{start}} = 100\text{ ms} \approx 99\tau$), dạng sóng thu được hoàn toàn ở \textbf{chế độ xác lập chuẩn}.
+\end{enumerate}
